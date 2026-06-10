@@ -83,6 +83,21 @@ class Grille:
                 return False
 
         return True
+    
+    def sauvegarder(self, chemin_json):
+        import json
+
+        donnees = {}
+        # reconstruire le meme format que le JSON d'origine
+        for i, motif in enumerate(self.motifs):
+            nom_motif = "motif" + str(i + 1)
+            cases_motif = []
+            for case in motif.cases:
+                cases_motif.append([case.ligne, case.colonne, case.valeur])
+            donnees[nom_motif] = cases_motif
+
+        with open(chemin_json, "w") as f:
+            json.dump(donnees, f)
 
     def est_resolue(self):
         # verifier que toutes les cases sont remplies et que toutes les regles sont respectees
