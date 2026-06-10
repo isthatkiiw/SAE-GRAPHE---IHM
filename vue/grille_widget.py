@@ -70,13 +70,15 @@ class GrilleWidget(QWidget):
                 else:
                     bouton.setText("")
 
+                bordures = self._construire_bordures(grille, l, c)
+
                 # les cases fixes ne sont pas cliquables
                 if case.fixe:
                     bouton.setEnabled(False)
-                    bouton.setStyleSheet("font-weight: bold; background-color: #d0d0d0;")
+                    bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; background-color: #b8d4e8; {bordures}")
                 else:
                     bouton.clicked.connect(self._on_clic)
-                    bouton.setStyleSheet("background-color: white;")
+                    bouton.setStyleSheet(f"font-size: 18px; background-color: #fef9e7; {bordures}")
 
                 self.layout_grille.addWidget(bouton, l, c)
                 ligne_boutons.append(bouton)
