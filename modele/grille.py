@@ -57,3 +57,29 @@ class Grille:
                 if (dl != 0 or dc != 0) and (0 <= l < self.nb_lignes) and (0 <= c < self.nb_colonnes):
                     resultat.append(self.cases[l][c])
         return resultat
+    
+    def placement_valide(self, ligne, colonne, valeur):
+        case = self.cases[ligne][colonne]
+
+        # trouver le motif auquel appartient cette case
+        motif_case = None
+        for motif in self.motifs:
+            if case in motif.cases:
+                motif_case = motif
+                break
+
+        # la valeur doit etre entre 1 et la taille du motif
+        if valeur < 1 or valeur > motif_case.taille():
+            return False
+
+        # la valeur ne doit pas deja etre presente dans le motif
+        for c in motif_case.cases:
+            if c != case and c.valeur == valeur:
+                return False
+
+        # la valeur ne doit pas etre identique a celle d'un voisin
+        for voisin in self.voisins(case):
+            if voisin.valeur == valeur:
+                return False
+
+        return True
