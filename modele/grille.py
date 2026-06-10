@@ -23,8 +23,9 @@ class Grille:
         for cases_motif in donnees.values():
             toutes_les_cases.extend(cases_motif)
 
-        self.nb_lignes = max(c[0] for c in toutes_les_cases) + 1
-        self.nb_colonnes = max(c[1] for c in toutes_les_cases) + 1
+        # le JSON est au format [colonne, ligne, valeur]
+        self.nb_lignes = max(c[1] for c in toutes_les_cases) + 1
+        self.nb_colonnes = max(c[0] for c in toutes_les_cases) + 1
 
         # creer le tableau 2D vide
         self.cases = []
@@ -38,11 +39,11 @@ class Grille:
         self.motifs = []
         for cases_motif in donnees.values():
             motif = Motif()
-            for (l, c, valeur) in cases_motif:
+            for (col, lig, valeur) in cases_motif:
                 # si la valeur est non nulle, la case est fixe (donnee au depart)
                 fixe = valeur != 0
-                case = Case(l, c, valeur, fixe)
-                self.cases[l][c] = case
+                case = Case(lig, col, valeur, fixe)
+                self.cases[lig][col] = case
                 motif.cases.append(case)
             self.motifs.append(motif)
     
