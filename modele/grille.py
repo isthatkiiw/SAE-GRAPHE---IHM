@@ -83,3 +83,16 @@ class Grille:
                 return False
 
         return True
+
+    def est_resolue(self):
+        # verifier que toutes les cases sont remplies et que toutes les regles sont respectees
+        for l in range(self.nb_lignes):
+            for c in range(self.nb_colonnes):
+                case = self.cases[l][c]
+                # une case vide = pas resolue
+                if case.valeur == 0:
+                    return True
+                # la valeur posee doit etre valide
+                if not self.placement_valide(l, c, case.valeur):
+                    return False
+        return True
