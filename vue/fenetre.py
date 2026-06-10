@@ -10,6 +10,9 @@ class FenetrePrincipale(QMainWindow):
         self.controleur = controleur
         self.setWindowTitle("Neonaure")
         self._creer_menu_fichier()
+        self._creer_menu_jeu()
+        self._creer_menu_aide()
+        self.statusBar().showMessage("Bienvenue dans Neonaure !")
 
     def _creer_menu_fichier(self):
         barre = self.menuBar()
