@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton
+from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout
 
 # Widget qui affiche la grille de jeu sous forme de boutons
 class GrilleWidget(QWidget):
@@ -7,9 +7,34 @@ class GrilleWidget(QWidget):
         super().__init__()
         self.controleur = controleur
         self.boutons = []  # tableau 2D de boutons, un par case
+
+        # disposition principale : grille a gauche, pave de chiffres a droite
+        self.layout_principal = QHBoxLayout()
+        self.setLayout(self.layout_principal)
+
         self.layout_grille = QGridLayout()
         self.layout_grille.setSpacing(0)
-        self.setLayout(self.layout_grille)
+        self.layout_principal.addLayout(self.layout_grille)
+
+        self.layout_pave = QVBoxLayout()
+        self.layout_pave.setSpacing(5)
+        self.layout_principal.addLayout(self.layout_pave)
+
+    def afficher_pave(self, n_max):
+        # supprimer les anciens boutons du pave
+        while self.layout_pave.count():
+            widget = self.layout_pave.takeAt(0).widget()
+            if widget:
+                widget.deleteLater()
+
+        # creer un bouton par chiffre de 1 a n_max
+        for chiffre in range(1, n_max + 1):
+            bouton = QPushButton(str(chiffre))
+            bouton.setFixedSize(50, 50)
+            bouton.setStyleSheet("font-size: 16px;")
+            bouton.chiffre = chiffre
+            bouton.clicked.connect(self._on_clic_pave)
+            self.layout_pave.addWidget(bouton)
 
     def _trouver_motif(self, grille, l, c):
         # renvoie le motif auquel appartient la case (l, c)
@@ -87,3 +112,7 @@ class GrilleWidget(QWidget):
     def _on_clic(self):
         bouton = self.sender()  # recupere le bouton qui a ete clique
         self.controleur.selectionner_case(bouton.ligne, bouton.colonne)
+
+    def _on_clic_pave(self):
+        bouton = self.sender()  # recupere le bouton du pave qui a ete clique
+        self.controleur.selectionner_chiffre(bouton.chiffre)
