@@ -45,3 +45,15 @@ class Grille:
                 self.cases[l][c] = case
                 motif.cases.append(case)
             self.motifs.append(motif)
+    
+    def voisins(self, case):
+        # renvoie la liste des cases voisines
+        resultat = []
+        for dl in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
+                l = case.ligne + dl
+                c = case.colonne + dc
+                # on ignore la case elle-meme et les cases hors de la grille
+                if (dl != 0 or dc != 0) and (0 <= l < self.nb_lignes) and (0 <= c < self.nb_colonnes):
+                    resultat.append(self.cases[l][c])
+        return resultat
