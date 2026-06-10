@@ -91,7 +91,7 @@ class Grille:
                 case = self.cases[l][c]
                 # une case vide = pas resolue
                 if case.valeur == 0:
-                    return True
+                    return False
                 # la valeur posee doit etre valide
                 if not self.placement_valide(l, c, case.valeur):
                     return False
