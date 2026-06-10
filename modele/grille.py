@@ -1,5 +1,6 @@
 from modele.case import Case
 from modele.motif import Motif
+import json
 
 # Represente la grille de jeu complete
 class Grille:
@@ -13,7 +14,6 @@ class Grille:
         self.motifs = []
 
     def charger(self, chemin_json):
-        import json
 
         with open(chemin_json, "r") as f:
             donnees = json.load(f)
@@ -85,7 +85,6 @@ class Grille:
         return True
     
     def sauvegarder(self, chemin_json):
-        import json
 
         donnees = {}
         # reconstruire le meme format que le JSON d'origine
