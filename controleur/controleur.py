@@ -12,6 +12,8 @@ class Controleur:
         self.fenetre.setCentralWidget(self.grille_widget)
         self.case_selectionnee = None
         self.chiffre_selectionne = 0
+        # case du dernier coup refuse, affichee en rouge par la vue
+        self.case_erreur = None
         # chemin du fichier ouvert, utile pour recommencer
         self.chemin_actuel = None
         # pile des coups pour le Ctrl+Z : liste de (case, ancienne_valeur)
@@ -62,6 +64,8 @@ class Controleur:
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
             return
+        # un nouveau clic efface l'erreur precedente
+        self.case_erreur = None
         self.case_selectionnee = self.grille.cases[ligne][colonne]
         if self.chiffre_selectionne != 0:
             self._poser_chiffre()
@@ -79,7 +83,18 @@ class Controleur:
         case = self.case_selectionnee
         if case.fixe:
             return
-        
+
+        # refuser le coup s'il ne respecte pas les regles du jeu
+        if not self.grille.placement_valide(case.ligne, case.colonne, self.chiffre_selectionne):
+            self.case_erreur = case
+            self.case_selectionnee = None
+            self.chiffre_selectionne = 0
+            self.grille_widget.afficher_grille(self.grille)
+            self.grille_widget.afficher_selection_pave()
+            self.fenetre.statusBar().showMessage("Coup invalide : ce chiffre ne respecte pas les regles ici.")
+            return
+
+        self.case_erreur = None
         # sauvegarder avant modification pour le Ctrl+Z
         self.historique.append((case, case.valeur))
         case.valeur = self.chiffre_selectionne
