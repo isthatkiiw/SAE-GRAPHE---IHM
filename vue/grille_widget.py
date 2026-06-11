@@ -67,10 +67,13 @@ class GrilleWidget(QWidget):
         else:
             droite = 1
 
-        return (f"border-top: {haut}px solid black;"
-                f"border-bottom: {bas}px solid black;"
-                f"border-left: {gauche}px solid black;"
-                f"border-right: {droite}px solid black;")
+        def couleur(epaisseur):
+            return "black" if epaisseur == 3 else "#aaaaaa"
+
+        return (f"border-top: {haut}px solid {couleur(haut)};"
+                f"border-bottom: {bas}px solid {couleur(bas)};"
+                f"border-left: {gauche}px solid {couleur(gauche)};"
+                f"border-right: {droite}px solid {couleur(droite)};")
 
     def afficher_grille(self, grille):
         # supprimer les boutons de l'affichage precedent
@@ -100,10 +103,10 @@ class GrilleWidget(QWidget):
                 # les cases fixes ne sont pas cliquables
                 if case.fixe:
                     bouton.setEnabled(False)
-                    bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; background-color: #b8d4e8; {bordures}")
+                    bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; color: black; background-color: #b8d4e8; {bordures}")
                 else:
                     bouton.clicked.connect(self._on_clic)
-                    bouton.setStyleSheet(f"font-size: 18px; background-color: #fef9e7; {bordures}")
+                    bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #fef9e7; {bordures}")
 
                 self.layout_grille.addWidget(bouton, l, c)
                 ligne_boutons.append(bouton)
