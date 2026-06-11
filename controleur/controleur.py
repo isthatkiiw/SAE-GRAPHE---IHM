@@ -24,3 +24,7 @@ class Controleur:
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_pave(n_max)
         self.fenetre.statusBar().showMessage("Grille chargee !")
+
+    def sauvegarder_grille(self, chemin):
+        self.grille.sauvegarder(chemin)
+        self.fenetre.statusBar().showMessage("Grille sauvegardee !")
