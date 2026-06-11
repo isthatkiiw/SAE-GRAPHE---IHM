@@ -39,9 +39,14 @@ class Grille:
         self.motifs = []
         for cases_motif in donnees.values():
             motif = Motif()
-            for (col, lig, valeur) in cases_motif:
-                # si la valeur est non nulle, la case est fixe (donnee au depart)
-                fixe = valeur != 0
+            for item in cases_motif:
+                col, lig, valeur = item[0], item[1], item[2]
+                # si un 4e element est present, on l'utilise (sauvegarde joueur)
+                # sinon on deduit : valeur non nulle = case fixe (puzzle original)
+                if len(item) > 3:
+                    fixe = item[3]
+                else:
+                    fixe = valeur != 0
                 case = Case(lig, col, valeur, fixe)
                 self.cases[lig][col] = case
                 motif.cases.append(case)
@@ -93,7 +98,7 @@ class Grille:
             nom_motif = "motif" + str(i + 1)
             cases_motif = []
             for case in motif.cases:
-                cases_motif.append([case.colonne, case.ligne, case.valeur])
+                cases_motif.append([case.colonne, case.ligne, case.valeur, case.fixe])
             donnees[nom_motif] = cases_motif
 
         with open(chemin_json, "w") as f:
