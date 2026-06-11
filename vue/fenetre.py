@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel
 from PyQt6.QtGui import QAction
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 
 # Fenetre principale du jeu
 class FenetrePrincipale(QMainWindow):
@@ -13,6 +13,11 @@ class FenetrePrincipale(QMainWindow):
         self._creer_menu_jeu()
         self._creer_menu_aide()
         self.statusBar().showMessage("Bienvenue dans Neonaure !")
+        self.label_chrono = QLabel("00:00")                         # label du chronometre, affiche en permanence a droite de la barre de statut
+        self.statusBar().addPermanentWidget(self.label_chrono)
+        self.secondes = 0                                           # nombre de secondes depuis le debut de la partie
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self._tic)
 
     def _creer_menu_fichier(self):
         barre = self.menuBar()
@@ -103,6 +108,32 @@ class FenetrePrincipale(QMainWindow):
         if texte != "" and texte in "123456789":
             chiffre = int(texte)
             self.controleur.selectionner_chiffre(chiffre)
+
+    def _texte_chrono(self):
+        # convertit le nombre de secondes en minutes et secondes
+        minutes = self.secondes // 60
+        secondes = self.secondes % 60
+        return f"{minutes:02d}:{secondes:02d}"
+
+    def demarrer_chrono(self):
+        # remet le chrono a zero et le lance
+        self.secondes = 0
+        self.label_chrono.setText("00:00")
+        self.timer.start(1000)
+
+    def _tic(self):
+        # appele automatiquement chaque seconde par le QTimer
+        self.secondes += 1
+        self.label_chrono.setText(self._texte_chrono())
+
+    def arreter_chrono(self):
+        # stoppe le chrono (a la victoire ou quand la grille est resolue)
+        self.timer.stop()
+
+    def afficher_victoire(self):
+        # fenetre de victoire affichant le temps realise
+        QMessageBox.information(self, "Victoire !",
+            f"Bravo ! Vous avez resolu la grille en {self._texte_chrono()}.")
 
     def ouvrir(self):
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
