@@ -1,6 +1,7 @@
 from modele.grille import Grille
 from vue.fenetre import FenetrePrincipale
 from vue.grille_widget import GrilleWidget
+from solveur.solveur import Solveur
 
 class Controleur:
 
@@ -49,8 +50,11 @@ class Controleur:
         self.grille_widget.afficher_grille(self.grille)
 
     def resoudre(self):
-        # implemente en phase 4
-        pass
+        if not self.grille.cases:
+            return
+        Solveur().resoudre(self.grille)
+        self.grille_widget.afficher_grille(self.grille)
+        self.fenetre.statusBar().showMessage("Grille resolue !")
 
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
@@ -77,11 +81,3 @@ class Controleur:
         self.grille_widget.afficher_grille(self.grille)
         if self.grille.est_resolue():
             self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
-
-    
-
-    
-
-    
-
-    
