@@ -64,4 +64,22 @@ class Controleur:
         if self.case_selectionnee is not None:
             self._poser_chiffre()
 
+    def _poser_chiffre(self):
+        case = self.case_selectionnee
+        if case.fixe:
+            return
+        
+        # sauvegarder avant modification pour le Ctrl+Z
+        self.historique.append((case, case.valeur))
+        case.valeur = self.chiffre_selectionne
+        self.case_selectionnee = None
+        self.chiffre_selectionne = 0
+        self.grille_widget.afficher_grille(self.grille)
+
+    
+
+    
+
+    
+
     
