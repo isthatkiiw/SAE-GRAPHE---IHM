@@ -52,9 +52,12 @@ class Controleur:
     def resoudre(self):
         if not self.grille.cases:
             return
-        Solveur().resoudre(self.grille)
-        self.grille_widget.afficher_grille(self.grille)
-        self.fenetre.statusBar().showMessage("Grille resolue !")
+        if Solveur().resoudre(self.grille):
+            self.grille_widget.afficher_grille(self.grille)
+            self.fenetre.statusBar().showMessage("Grille resolue !")
+        else:
+            self.grille_widget.afficher_grille(self.grille)
+            self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
 
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
