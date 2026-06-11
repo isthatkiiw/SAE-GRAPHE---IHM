@@ -36,3 +36,9 @@ class Controleur:
             self.fenetre.statusBar().showMessage("Bravo ! La grille est resolue !")
         else:
             self.fenetre.statusBar().showMessage("La grille n'est pas encore resolue.")
+
+    def recommencer(self):
+        if self.chemin_actuel:
+            self.charger_grille(self.chemin_actuel)
+
+    
