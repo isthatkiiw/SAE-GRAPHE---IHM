@@ -116,12 +116,13 @@ class GrilleWidget(QWidget):
                 if case.fixe:
                     bouton.setEnabled(False)
                     bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; color: black; background-color: #b8d4e8; {bordures}")
-                elif case == case_selectionnee:
-                    bouton.clicked.connect(self._on_clic)
-                    bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #f5a623; {bordures}")
+                # le rouge de l'erreur passe avant l'orange de la selection
                 elif case == self.controleur.case_erreur:
                     bouton.clicked.connect(self._on_clic)
                     bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #e74c3c; {bordures}")
+                elif case == case_selectionnee:
+                    bouton.clicked.connect(self._on_clic)
+                    bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #f5a623; {bordures}")
                 else:
                     bouton.clicked.connect(self._on_clic)
                     bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #fef9e7; {bordures}")

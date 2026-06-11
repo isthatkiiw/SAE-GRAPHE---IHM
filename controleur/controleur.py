@@ -89,6 +89,8 @@ class Controleur:
         # sauvegarder avant modification pour le Ctrl+Z
         self.historique.append((case, case.valeur))
         case.valeur = 0
+        # une case videe n'est plus en erreur pour qu'elle reste selectionnee
+        self.case_erreur = None
         self.grille_widget.afficher_grille(self.grille)
 
     def _poser_chiffre(self):
@@ -99,7 +101,7 @@ class Controleur:
         # refuser le coup s'il ne respecte pas les regles du jeu
         if not self.grille.placement_valide(case.ligne, case.colonne, self.chiffre_selectionne):
             self.case_erreur = case
-            self.case_selectionnee = None
+            # on garde la case selectionnee 
             self.chiffre_selectionne = 0
             self.grille_widget.afficher_grille(self.grille)
             self.grille_widget.afficher_selection_pave()
