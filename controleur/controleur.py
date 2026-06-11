@@ -52,4 +52,16 @@ class Controleur:
         # implemente en phase 4
         pass
 
+    def selectionner_case(self, ligne, colonne):
+        if not self.grille.cases:
+            return
+        self.case_selectionnee = self.grille.cases[ligne][colonne]
+        if self.chiffre_selectionne != 0:
+            self._poser_chiffre()
+
+    def selectionner_chiffre(self, chiffre):
+        self.chiffre_selectionne = chiffre
+        if self.case_selectionnee is not None:
+            self._poser_chiffre()
+
     
