@@ -75,6 +75,8 @@ class Controleur:
         self.case_selectionnee = None
         self.chiffre_selectionne = 0
         self.grille_widget.afficher_grille(self.grille)
+        if self.grille.est_resolue():
+            self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
 
     
 
