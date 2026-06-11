@@ -108,8 +108,8 @@ class FenetrePrincipale(QMainWindow):
         if texte != "" and texte in "123456789":
             chiffre = int(texte)
             self.controleur.selectionner_chiffre(chiffre)
-        # touche suppr : effacer le chiffre de la case selectionnee
-        elif event.key() == Qt.Key.Key_Delete:
+        # touche suppr ou retour arriere : effacer le chiffre de la case selectionnee
+        elif event.key() == Qt.Key.Key_Delete or event.key() == Qt.Key.Key_Backspace:
             self.controleur.effacer_case()
 
     def _texte_chrono(self):
