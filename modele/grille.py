@@ -93,7 +93,7 @@ class Grille:
             nom_motif = "motif" + str(i + 1)
             cases_motif = []
             for case in motif.cases:
-                cases_motif.append([case.ligne, case.colonne, case.valeur])
+                cases_motif.append([case.colonne, case.ligne, case.valeur])
             donnees[nom_motif] = cases_motif
 
         with open(chemin_json, "w") as f:
