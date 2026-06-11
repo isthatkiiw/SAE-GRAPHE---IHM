@@ -119,6 +119,9 @@ class GrilleWidget(QWidget):
                 elif case == case_selectionnee:
                     bouton.clicked.connect(self._on_clic)
                     bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #f5a623; {bordures}")
+                elif case == self.controleur.case_erreur:
+                    bouton.clicked.connect(self._on_clic)
+                    bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #e74c3c; {bordures}")
                 else:
                     bouton.clicked.connect(self._on_clic)
                     bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #fef9e7; {bordures}")
