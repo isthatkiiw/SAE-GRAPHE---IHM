@@ -98,8 +98,9 @@ class FenetrePrincipale(QMainWindow):
     def keyPressEvent(self, event):
         # quand on appuie sur une touche du clavier
         texte = event.text()
-        # on verifie que la touche est bien un chiffre de 1 a 5
-        if texte != "" and texte in "12345":
+        # on verifie que la touche est bien un chiffre de 1 a 9
+        # c'est le controleur qui refusera un chiffre trop grand pour le motif
+        if texte != "" and texte in "123456789":
             chiffre = int(texte)
             self.controleur.selectionner_chiffre(chiffre)
 
