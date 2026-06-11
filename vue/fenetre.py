@@ -19,16 +19,19 @@ class FenetrePrincipale(QMainWindow):
         menu_fichier = barre.addMenu("Fichier")
 
         action_ouvrir = QAction("Ouvrir", self)
+        action_ouvrir.setShortcut("Ctrl+O")
         action_ouvrir.triggered.connect(self.ouvrir)
         menu_fichier.addAction(action_ouvrir)
 
         action_sauvegarder = QAction("Sauvegarder", self)
+        action_sauvegarder.setShortcut("Ctrl+S")
         action_sauvegarder.triggered.connect(self.sauvegarder)
         menu_fichier.addAction(action_sauvegarder)
 
         menu_fichier.addSeparator()
 
         action_quitter = QAction("Quitter", self)
+        action_quitter.setShortcut("Ctrl+Q")
         action_quitter.triggered.connect(self.close)
         menu_fichier.addAction(action_quitter)
     
@@ -36,17 +39,24 @@ class FenetrePrincipale(QMainWindow):
         barre = self.menuBar()
         menu_jeu = barre.addMenu("Jeu")
 
+        action_annuler = QAction("Annuler", self)
+        action_annuler.setShortcut("Ctrl+Z")
+        action_annuler.triggered.connect(self.controleur.annuler)
+        menu_jeu.addAction(action_annuler)
+
+        menu_jeu.addSeparator()
+
         action_verifier = QAction("Verifier", self)
         action_verifier.triggered.connect(self.controleur.verifier)
         menu_jeu.addAction(action_verifier)
 
-        action_resoudre = QAction("Resoudre", self)
-        action_resoudre.triggered.connect(self.controleur.resoudre)
-        menu_jeu.addAction(action_resoudre)
-
         action_recommencer = QAction("Recommencer", self)
         action_recommencer.triggered.connect(self.controleur.recommencer)
         menu_jeu.addAction(action_recommencer)
+
+        action_resoudre = QAction("Resoudre", self)
+        action_resoudre.triggered.connect(self.controleur.resoudre)
+        menu_jeu.addAction(action_resoudre)
 
     def _creer_menu_aide(self):
         barre = self.menuBar()
