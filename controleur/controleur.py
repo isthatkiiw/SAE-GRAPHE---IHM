@@ -40,5 +40,16 @@ class Controleur:
     def recommencer(self):
         if self.chemin_actuel:
             self.charger_grille(self.chemin_actuel)
+            
+    def annuler(self):
+        if not self.historique:
+            return
+        case, ancienne_valeur = self.historique.pop()
+        case.valeur = ancienne_valeur
+        self.grille_widget.afficher_grille(self.grille)
+
+    def resoudre(self):
+        # implemente en phase 4
+        pass
 
     
