@@ -98,7 +98,7 @@ class Controleur:
         # sauvegarder avant modification pour le Ctrl+Z
         self.historique.append((case, case.valeur))
         case.valeur = self.chiffre_selectionne
-        self.case_selectionnee = None
+        # on garde la case selectionnee pour pouvoir changer sa valeur sans recliquer
         self.chiffre_selectionne = 0
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_selection_pave()
