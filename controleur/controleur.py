@@ -28,3 +28,11 @@ class Controleur:
     def sauvegarder_grille(self, chemin):
         self.grille.sauvegarder(chemin)
         self.fenetre.statusBar().showMessage("Grille sauvegardee !")
+
+    def verifier(self):
+        if not self.grille.cases:
+            return
+        if self.grille.est_resolue():
+            self.fenetre.statusBar().showMessage("Bravo ! La grille est resolue !")
+        else:
+            self.fenetre.statusBar().showMessage("La grille n'est pas encore resolue.")
