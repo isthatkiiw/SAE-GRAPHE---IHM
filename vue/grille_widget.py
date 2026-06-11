@@ -7,6 +7,7 @@ class GrilleWidget(QWidget):
         super().__init__()
         self.controleur = controleur
         self.boutons = []  # tableau 2D de boutons, un par case
+        self.boutons_pave = []  # liste des boutons du pave de chiffres
 
         # disposition principale : grille a gauche, pave de chiffres a droite
         self.layout_principal = QHBoxLayout()
@@ -26,6 +27,7 @@ class GrilleWidget(QWidget):
             widget = self.layout_pave.takeAt(0).widget()
             if widget:
                 widget.deleteLater()
+        self.boutons_pave = []
 
         # creer un bouton par chiffre de 1 a n_max
         for chiffre in range(1, n_max + 1):
@@ -35,6 +37,15 @@ class GrilleWidget(QWidget):
             bouton.chiffre = chiffre
             bouton.clicked.connect(self._on_clic_pave)
             self.layout_pave.addWidget(bouton)
+            self.boutons_pave.append(bouton)
+
+    def afficher_selection_pave(self):
+        # met en orange le bouton du pave correspondant au chiffre selectionne
+        for bouton in self.boutons_pave:
+            if bouton.chiffre == self.controleur.chiffre_selectionne:
+                bouton.setStyleSheet("font-size: 16px; background-color: #f5a623;")
+            else:
+                bouton.setStyleSheet("font-size: 16px;")
 
     def _trouver_motif(self, grille, l, c):
         # renvoie le motif auquel appartient la case (l, c)
@@ -99,11 +110,15 @@ class GrilleWidget(QWidget):
                     bouton.setText("")
 
                 bordures = self._construire_bordures(grille, l, c)
+                case_selectionnee = self.controleur.case_selectionnee
 
                 # les cases fixes ne sont pas cliquables
                 if case.fixe:
                     bouton.setEnabled(False)
                     bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; color: black; background-color: #b8d4e8; {bordures}")
+                elif case == case_selectionnee:
+                    bouton.clicked.connect(self._on_clic)
+                    bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #f5a623; {bordures}")
                 else:
                     bouton.clicked.connect(self._on_clic)
                     bouton.setStyleSheet(f"font-size: 18px; color: black; background-color: #fef9e7; {bordures}")
