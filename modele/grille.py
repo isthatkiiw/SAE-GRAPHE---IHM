@@ -86,7 +86,7 @@ class Grille:
         return True
     
     def sauvegarder(self, chemin_json):
-
+        
         donnees = {}
         # reconstruire le meme format que le JSON d'origine
         for i, motif in enumerate(self.motifs):
