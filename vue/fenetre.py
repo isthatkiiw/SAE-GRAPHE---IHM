@@ -102,6 +102,9 @@ class FenetrePrincipale(QMainWindow):
         if texte != "" and texte in "12345":
             chiffre = int(texte)
             self.controleur.selectionner_chiffre(chiffre)
+        # touche suppr : effacer le chiffre de la case selectionnee
+        elif event.key() == Qt.Key.Key_Delete:
+            self.controleur.effacer_case()
 
     def ouvrir(self):
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")

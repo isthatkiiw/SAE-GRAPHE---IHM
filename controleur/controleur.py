@@ -79,6 +79,16 @@ class Controleur:
         else:
             self.grille_widget.afficher_selection_pave()
 
+    def effacer_case(self):
+        case = self.case_selectionnee
+        # rien a faire si aucune case n'est selectionnee, si elle est fixe ou deja vide
+        if case is None or case.fixe or case.valeur == 0:
+            return
+        # sauvegarder avant modification pour le Ctrl+Z
+        self.historique.append((case, case.valeur))
+        case.valeur = 0
+        self.grille_widget.afficher_grille(self.grille)
+
     def _poser_chiffre(self):
         case = self.case_selectionnee
         if case.fixe:
