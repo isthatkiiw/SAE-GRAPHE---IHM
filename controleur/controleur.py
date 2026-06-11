@@ -26,6 +26,7 @@ class Controleur:
         n_max = max(motif.taille() for motif in self.grille.motifs)
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_pave(n_max)
+        self.fenetre.demarrer_chrono()
         self.fenetre.statusBar().showMessage("Grille chargee !")
 
     def sauvegarder_grille(self, chemin):
@@ -56,6 +57,7 @@ class Controleur:
             return
         if Solveur().resoudre(self.grille):
             self.grille_widget.afficher_grille(self.grille)
+            self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("Grille resolue !")
         else:
             self.grille_widget.afficher_grille(self.grille)
@@ -113,4 +115,6 @@ class Controleur:
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_selection_pave()
         if self.grille.est_resolue():
+            self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
+            self.fenetre.afficher_victoire()
