@@ -95,6 +95,14 @@ class FenetrePrincipale(QMainWindow):
             "Kassim  \n"
             "Kevin   ")
 
+    def keyPressEvent(self, event):
+        # quand on appuie sur une touche du clavier
+        texte = event.text()
+        # on verifie que la touche est bien un chiffre de 1 a 5
+        if texte != "" and texte in "12345":
+            chiffre = int(texte)
+            self.controleur.selectionner_chiffre(chiffre)
+
     def ouvrir(self):
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
         if chemin:
