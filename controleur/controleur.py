@@ -65,11 +65,15 @@ class Controleur:
         self.case_selectionnee = self.grille.cases[ligne][colonne]
         if self.chiffre_selectionne != 0:
             self._poser_chiffre()
+        else:
+            self.grille_widget.afficher_grille(self.grille)
 
     def selectionner_chiffre(self, chiffre):
         self.chiffre_selectionne = chiffre
         if self.case_selectionnee is not None:
             self._poser_chiffre()
+        else:
+            self.grille_widget.afficher_selection_pave()
 
     def _poser_chiffre(self):
         case = self.case_selectionnee
@@ -82,5 +86,6 @@ class Controleur:
         self.case_selectionnee = None
         self.chiffre_selectionne = 0
         self.grille_widget.afficher_grille(self.grille)
+        self.grille_widget.afficher_selection_pave()
         if self.grille.est_resolue():
             self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
