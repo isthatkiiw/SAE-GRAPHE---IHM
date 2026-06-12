@@ -31,7 +31,7 @@ class MenuAccueil(QWidget):
         bouton_quitter = QPushButton("Quitter")
         for bouton in [bouton_charger, bouton_regles, bouton_quitter]:
             bouton.setFixedSize(180, 40)
-            bouton.setStyleSheet("font-size: 14px; color: #fef9e7; background-color: #b8d4e8; border: 1px solid #fef9e7;")
+            bouton.setStyleSheet("font-size: 14px; color: black; background-color: #b8d4e8; border: 1px solid #fef9e7;")
 
         bouton_charger.clicked.connect(self.controleur.fenetre.ouvrir)
         bouton_regles.clicked.connect(self.controleur.fenetre.afficher_regles)
