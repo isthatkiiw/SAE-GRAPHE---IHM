@@ -59,6 +59,11 @@ class FenetrePrincipale(QMainWindow):
         action_recommencer.triggered.connect(self.controleur.recommencer)
         menu_jeu.addAction(action_recommencer)
 
+        action_indice = QAction("Indice", self)
+        action_indice.setShortcut("Ctrl+I")
+        action_indice.triggered.connect(self.controleur.indice)
+        menu_jeu.addAction(action_indice)
+
         action_resoudre = QAction("Resoudre", self)
         action_resoudre.triggered.connect(self.controleur.resoudre)
         menu_jeu.addAction(action_resoudre)
@@ -91,7 +96,11 @@ class FenetrePrincipale(QMainWindow):
             "Ctrl+O  →  Ouvrir une grille\n"
             "Ctrl+S  →  Sauvegarder\n"
             "Ctrl+Z  →  Annuler le dernier coup\n"
-            "Ctrl+Q  →  Quitter")
+            "Ctrl+I  →  Indice (place un chiffre correct)\n"
+            "Ctrl+Q  →  Quitter\n"
+            "\n"
+            "1 a 9  →  Poser le chiffre dans la case selectionnee\n"
+            "Suppr ou Retour arriere  →  Effacer le chiffre de la case")
 
     def afficher_credits(self):
         QMessageBox.information(self, "Credits",
