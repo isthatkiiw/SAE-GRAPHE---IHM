@@ -100,7 +100,8 @@ class FenetrePrincipale(QMainWindow):
             "Ctrl+Q  →  Quitter\n"
             "\n"
             "1 a 9  →  Poser le chiffre dans la case selectionnee\n"
-            "Suppr ou Retour arriere  →  Effacer le chiffre de la case")
+            "Suppr ou Retour arriere  →  Effacer le chiffre de la case\n"
+            "Double clic sur une case  →  Effacer son chiffre")
 
     def afficher_credits(self):
         QMessageBox.information(self, "Credits",
