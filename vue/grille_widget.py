@@ -134,6 +134,19 @@ class GrilleWidget(QWidget):
                 f"border-left: {gauche}px solid {couleur(gauche)};"
                 f"border-right: {droite}px solid {couleur(droite)};")
 
+    def _couleur_cases_fixes(self):
+        # chaque difficulte a sa couleur de cases fixes pour donner une ambiance
+        if self.controleur.difficulte == "Facile":
+            return "#b8e8c0"  # vert
+        elif self.controleur.difficulte == "Moyen":
+            return "#f7e8a0"  # jaune
+        elif self.controleur.difficulte == "Difficile":
+            return "#e8b0a8"  # rouge clair, different du rouge vif des erreurs
+        elif self.controleur.difficulte == "Hardcore":
+            return "#d8b8e8"  # violet
+        # grille chargee par le joueur : bleu d'origine
+        return "#b8d4e8"
+
     def afficher_grille(self, grille):
         # supprimer les boutons de l'affichage precedent
         for ligne_boutons in self.boutons:
@@ -141,6 +154,8 @@ class GrilleWidget(QWidget):
                 self.layout_grille.removeWidget(bouton)
                 bouton.deleteLater()
         self.boutons = []
+
+        couleur_fixe = self._couleur_cases_fixes()
 
         # creer un bouton pour chaque case de la grille
         for l in range(grille.nb_lignes):
@@ -163,7 +178,7 @@ class GrilleWidget(QWidget):
                 # les cases fixes ne sont pas cliquables
                 if case.fixe:
                     bouton.setEnabled(False)
-                    bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; color: black; background-color: #b8d4e8; {bordures}")
+                    bouton.setStyleSheet(f"font-weight: bold; font-size: 18px; color: black; background-color: {couleur_fixe}; {bordures}")
                 # le rouge de l'erreur passe avant l'orange de la selection
                 elif case == self.controleur.case_erreur:
                     bouton.clicked.connect(self._on_clic)
