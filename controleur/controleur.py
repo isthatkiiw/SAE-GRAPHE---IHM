@@ -23,6 +23,10 @@ class Controleur:
         self.grille.charger(chemin)
         self.chemin_actuel = chemin
         self.historique = []
+        # oublier la selection de la partie precedente
+        self.case_selectionnee = None
+        self.chiffre_selectionne = 0
+        self.case_erreur = None
         n_max = max(motif.taille() for motif in self.grille.motifs)
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_pave(n_max)
@@ -60,6 +64,8 @@ class Controleur:
             self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("Grille resolue !")
             self.fenetre.afficher_resolution_auto()
+            # repartir sur une grille vierge une fois la pop up fermee
+            self.recommencer()
         else:
             self.grille_widget.afficher_grille(self.grille)
             self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
@@ -106,6 +112,8 @@ class Controleur:
         if self.grille.est_resolue():
             self.fenetre.arreter_chrono()
             self.fenetre.afficher_victoire()
+            # repartir sur une grille vierge une fois la pop up fermee
+            self.recommencer()
 
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
@@ -171,3 +179,5 @@ class Controleur:
             self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
             self.fenetre.afficher_victoire()
+            # repartir sur une grille vierge une fois la pop up fermee
+            self.recommencer()
