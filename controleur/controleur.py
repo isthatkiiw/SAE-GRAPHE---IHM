@@ -35,6 +35,7 @@ class Controleur:
         self.grille_widget.afficher_pave(n_max)
         # basculer du menu d'accueil vers la page de jeu
         self.fenetre.afficher_jeu()
+        self.fenetre.activer_actions_jeu()
         self.fenetre.demarrer_chrono()
         self.fenetre.statusBar().showMessage("Grille chargee !")
 
