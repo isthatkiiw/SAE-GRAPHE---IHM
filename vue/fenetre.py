@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget, QInputDialog
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt, QTimer
 
@@ -18,9 +18,12 @@ class FenetrePrincipale(QMainWindow):
             action.setEnabled(False)
             
         self.statusBar().showMessage("Bienvenue dans Neonaure !")
-        self.label_chrono = QLabel("00:00")                         # label du chronometre, affiche en permanence a droite de la barre de statut
+        self.label_indices = QLabel("") # compteur d'indices restants, vide en mode libre
+        self.statusBar().addPermanentWidget(self.label_indices)
+        self.label_chrono = QLabel("00:00") # label du chronometre, affiche en permanence a droite de la barre de statut
         self.statusBar().addPermanentWidget(self.label_chrono)
-        self.secondes = 0                                           # nombre de secondes depuis le debut de la partie
+        self.secondes = 0 # nombre de secondes depuis le debut de la partie
+        self.limite = 0  # temps maximum en secondes, 0 = pas de limite
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._tic)
         # pile de pages : page 0 = menu d'accueil, page 1 = jeu
@@ -156,16 +159,31 @@ class FenetrePrincipale(QMainWindow):
         secondes = self.secondes % 60
         return f"{minutes:02d}:{secondes:02d}"
 
-    def demarrer_chrono(self):
-        # remet le chrono a zero et le lance
+    def demarrer_chrono(self, limite=0):
+        # remet le chrono a zero et le lance (0 = pas de limite)
         self.secondes = 0
-        self.label_chrono.setText("00:00")
+        self.limite = limite
+        if limite > 0:
+            minutes = limite // 60
+            self.label_chrono.setText(f"{minutes:02d}:00")
+        else:
+            self.label_chrono.setText("00:00")
         self.timer.start(1000)
 
     def _tic(self):
         # appele automatiquement chaque seconde par le QTimer
         self.secondes += 1
-        self.label_chrono.setText(self._texte_chrono())
+        # avec une limite de temps, on affiche le temps restant a la place
+        if self.limite > 0:
+            restant = self.limite - self.secondes
+            minutes = restant // 60
+            secondes = restant % 60
+            self.label_chrono.setText(f"{minutes:02d}:{secondes:02d}")
+            if restant <= 0:
+                self.timer.stop()
+                self.controleur.temps_ecoule()
+        else:
+            self.label_chrono.setText(self._texte_chrono())
 
     def arreter_chrono(self):
         # stoppe le chrono (a la victoire ou quand la grille est resolue)
@@ -182,6 +200,34 @@ class FenetrePrincipale(QMainWindow):
             "L'ordinateur a resolu la grille en 0.0001 seconde.\n"
             "Vous, ca fait " + self._texte_chrono() + " que vous etes dessus...\n"
             "Mais promis, on ne dira rien a personne.")
+
+    def demander_difficulte(self):
+        # propose les 4 difficultes au joueur, renvoie None s'il annule
+        choix = ["Facile", "Moyen", "Difficile", "Hardcore"]
+        difficulte, ok = QInputDialog.getItem(self, "Difficulte",
+            "Choisissez la difficulte :", choix, 0, False)
+        if ok:
+            return difficulte
+        return None
+
+    def afficher_indices_restants(self, nombre):
+        # met a jour le compteur du pied de page (-1 = illimites, on n'affiche rien)
+        if nombre >= 0:
+            self.label_indices.setText("Indices : " + str(nombre))
+        else:
+            self.label_indices.setText("")
+
+    def afficher_plus_indice(self):
+        # fenetre affichee quand le joueur a epuise ses indices
+        QMessageBox.information(self, "Plus d'indice !",
+            "Vous avez utilise tous vos indices pour cette difficulte.\n"
+            "Il va falloir finir avec votre cerveau !")
+
+    def afficher_defaite(self):
+        # fenetre affichee quand le temps de la difficulte est ecoule
+        QMessageBox.information(self, "Temps ecoule !",
+            "Le temps est ecoule, la grille n'etait pas terminee...\n"
+            "La partie recommence, plus de chance cette fois !")
 
     def activer_actions_jeu(self):
         # rend les actions de jeu cliquables, appele quand une grille est chargee
@@ -238,7 +284,8 @@ class FenetrePrincipale(QMainWindow):
             return
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
         if chemin:
-            self.controleur.charger_grille(chemin)
+            # grille ouverte a la main : mode libre
+            self.controleur.ouvrir_grille(chemin)
 
     def sauvegarder(self):
         chemin, _ = QFileDialog.getSaveFileName(self, "Sauvegarder la grille", "", "Fichiers JSON (*.json)")
