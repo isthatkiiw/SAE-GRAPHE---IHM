@@ -59,6 +59,7 @@ class Controleur:
             self.grille_widget.afficher_grille(self.grille)
             self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("Grille resolue !")
+            self.fenetre.afficher_resolution_auto()
         else:
             self.grille_widget.afficher_grille(self.grille)
             self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
