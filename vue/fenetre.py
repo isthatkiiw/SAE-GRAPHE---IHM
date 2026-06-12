@@ -197,7 +197,21 @@ class FenetrePrincipale(QMainWindow):
                 "Laisser l'ordinateur resoudre la grille ?\nLa partie en cours sera terminee."):
             self.controleur.resoudre()
 
+    def _confirmer_abandon(self):
+        # renvoie True si aucune partie n'est en cours, ou si le joueur accepte de l'abandonner
+        if not self.controleur.grille.cases:
+            return True
+        return self._demander_confirmation("Changer de grille",
+                "Une partie est en cours.\nChanger de grille l'abandonnera.")
+
+    def jouer_aleatoire(self):
+        if self._confirmer_abandon():
+            self.controleur.jouer_grille_aleatoire()
+
     def ouvrir(self):
+        # demander confirmation si une partie est deja en cours
+        if not self._confirmer_abandon():
+            return
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
         if chemin:
             self.controleur.charger_grille(chemin)
