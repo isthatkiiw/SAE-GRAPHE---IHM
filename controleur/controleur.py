@@ -21,6 +21,10 @@ class Controleur:
         self.chemin_actuel = None
         # pile des coups pour le Ctrl+Z : liste de (case, ancienne_valeur)
         self.historique = []
+        # difficulte : temps maximum en secondes (0 = sans limite) et nombre d'indices (-1 = pas de limite)
+        self.limite_secondes = 0
+        self.indices_max = -1
+        self.indices_restants = -1
 
     def charger_grille(self, chemin):
         self.grille.charger(chemin)
@@ -30,19 +34,51 @@ class Controleur:
         self.case_selectionnee = None
         self.chiffre_selectionne = 0
         self.case_erreur = None
+        # remettre le compteur d'indices de la difficulte choisie
+        self.indices_restants = self.indices_max
+        self.fenetre.afficher_indices_restants(self.indices_restants)
         n_max = max(motif.taille() for motif in self.grille.motifs)
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_pave(n_max)
         # basculer du menu d'accueil vers la page de jeu
         self.fenetre.afficher_jeu()
         self.fenetre.activer_actions_jeu()
-        self.fenetre.demarrer_chrono()
+        self.fenetre.demarrer_chrono(self.limite_secondes)
         self.fenetre.statusBar().showMessage("Grille chargee !")
 
     def jouer_grille_aleatoire(self):
+        # demander la difficulte au joueur avant de lancer la partie
+        difficulte = self.fenetre.demander_difficulte()
+        if difficulte is None:
+            return
+        if difficulte == "Facile":
+            self.limite_secondes = 30 * 60
+            self.indices_max = 5
+        elif difficulte == "Moyen":
+            self.limite_secondes = 20 * 60
+            self.indices_max = 3
+        elif difficulte == "Difficile":
+            self.limite_secondes = 10 * 60
+            self.indices_max = 1
+        else:
+            # hardcore : tres peu de temps et aucun indice
+            self.limite_secondes = 5 * 60
+            self.indices_max = 0
         # tirer un numero au hasard parmi les grilles grille1.json a grille9.json
         numero = random.randint(1, 9)
         self.charger_grille("Grille/grille" + str(numero) + ".json")
+
+    def ouvrir_grille(self, chemin):
+        # grille choisie a la main : mode libre san slimite de temps ni d'indice
+        self.limite_secondes = 0
+        self.indices_max = -1
+        self.charger_grille(chemin)
+
+    def temps_ecoule(self):
+        # la limite de temps de la difficulte est atteinte : partie perdue
+        self.fenetre.afficher_defaite()
+        # repartir sur une grille vierge une fois la pop up fermee
+        self.recommencer()
 
     def sauvegarder_grille(self, chemin):
         self.grille.sauvegarder(chemin)
@@ -63,6 +99,7 @@ class Controleur:
     def retour_menu(self):
         # quitter la partie en cours et revenir au menu d'accueil
         self.grille = Grille()
+        self.fenetre.afficher_indices_restants(-1)
         self.fenetre.arreter_chrono()
         self.fenetre.desactiver_actions_jeu()
         self.fenetre.afficher_menu()
@@ -97,6 +134,11 @@ class Controleur:
 
     def indice(self):
         if not self.grille.cases:
+            return
+
+        # plus d'indice disponible dans cette difficulte
+        if self.indices_restants == 0:
+            self.fenetre.afficher_plus_indice()
             return
 
         # memoriser la valeur de chaque case avant de resoudre
@@ -150,6 +192,10 @@ class Controleur:
         self.historique.append((case_indice, case_indice.valeur))
         case_indice.valeur = valeur_indice
         self.grille_widget.afficher_grille(self.grille)
+        # enlever l'indice utilise (-1 = mode libre, on ne decompte pas)
+        if self.indices_restants > 0:
+            self.indices_restants -= 1
+        self.fenetre.afficher_indices_restants(self.indices_restants)
         self.fenetre.statusBar().showMessage("Indice : un chiffre a ete place pour vous.")
         if self.grille.est_resolue():
             self.fenetre.arreter_chrono()
