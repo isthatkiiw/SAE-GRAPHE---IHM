@@ -25,6 +25,8 @@ class Controleur:
         self.limite_secondes = 0
         self.indices_max = -1
         self.indices_restants = -1
+        # nom de la difficulte choisie, None = grille chargee par le joueur
+        self.difficulte = None
 
     def charger_grille(self, chemin):
         self.grille.charger(chemin)
@@ -51,6 +53,7 @@ class Controleur:
         difficulte = self.fenetre.demander_difficulte()
         if difficulte is None:
             return
+        self.difficulte = difficulte
         if difficulte == "Facile":
             self.limite_secondes = 30 * 60
             self.indices_max = 5
@@ -72,6 +75,7 @@ class Controleur:
         # grille choisie a la main : mode libre san slimite de temps ni d'indice
         self.limite_secondes = 0
         self.indices_max = -1
+        self.difficulte = None
         self.charger_grille(chemin)
 
     def temps_ecoule(self):
