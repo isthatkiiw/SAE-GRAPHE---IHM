@@ -23,7 +23,7 @@ class MenuAccueil(QWidget):
         bouton_jouer = QPushButton("JOUER")
         bouton_jouer.setFixedSize(240, 70)
         bouton_jouer.setStyleSheet("font-size: 24px; font-weight: bold; color: black; background-color: #f5a623; border: 3px solid #fef9e7;")
-        bouton_jouer.clicked.connect(self.controleur.jouer_grille_aleatoire)
+        bouton_jouer.clicked.connect(self.controleur.fenetre.jouer_aleatoire)
 
         # boutons secondaires en bleu
         bouton_charger = QPushButton("Charger une grille")
