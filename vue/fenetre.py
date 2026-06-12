@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt, QTimer
 
@@ -18,6 +18,19 @@ class FenetrePrincipale(QMainWindow):
         self.secondes = 0                                           # nombre de secondes depuis le debut de la partie
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._tic)
+        # pile de pages : page 0 = menu d'accueil, page 1 = jeu
+        self.pages = QStackedWidget()
+        self.setCentralWidget(self.pages)
+
+    def ajouter_pages(self, menu, jeu):
+        self.pages.addWidget(menu)
+        self.pages.addWidget(jeu)
+
+    def afficher_menu(self):
+        self.pages.setCurrentIndex(0)
+
+    def afficher_jeu(self):
+        self.pages.setCurrentIndex(1)
 
     def _creer_menu_fichier(self):
         barre = self.menuBar()

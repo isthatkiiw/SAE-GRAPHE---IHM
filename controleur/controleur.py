@@ -2,6 +2,7 @@ import random
 from modele.grille import Grille
 from vue.fenetre import FenetrePrincipale
 from vue.grille_widget import GrilleWidget
+from vue.menu_accueil import MenuAccueil
 from solveur.solveur import Solveur
 
 class Controleur:
@@ -10,7 +11,8 @@ class Controleur:
         self.grille = Grille()
         self.fenetre = FenetrePrincipale(self)
         self.grille_widget = GrilleWidget(self)
-        self.fenetre.setCentralWidget(self.grille_widget)
+        self.menu_accueil = MenuAccueil(self)
+        self.fenetre.ajouter_pages(self.menu_accueil, self.grille_widget)
         self.case_selectionnee = None
         self.chiffre_selectionne = 0
         # case du dernier coup refuse, affichee en rouge par la vue
@@ -31,8 +33,15 @@ class Controleur:
         n_max = max(motif.taille() for motif in self.grille.motifs)
         self.grille_widget.afficher_grille(self.grille)
         self.grille_widget.afficher_pave(n_max)
+        # basculer du menu d'accueil vers la page de jeu
+        self.fenetre.afficher_jeu()
         self.fenetre.demarrer_chrono()
         self.fenetre.statusBar().showMessage("Grille chargee !")
+
+    def jouer_grille_aleatoire(self):
+        # tirer un numero au hasard parmi les grilles grille1.json a grille9.json
+        numero = random.randint(1, 9)
+        self.charger_grille("Grille/grille" + str(numero) + ".json")
 
     def sauvegarder_grille(self, chemin):
         self.grille.sauvegarder(chemin)

@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout
+from PyQt6.QtCore import Qt
 
 # Bouton d'une case : comme un bouton normal, mais detecte aussi le double clic
 class BoutonCase(QPushButton):
@@ -19,6 +20,10 @@ class GrilleWidget(QWidget):
         self.controleur = controleur
         self.boutons = []  # tableau 2D de boutons, un par case
         self.boutons_pave = []  # liste des boutons du pave de chiffres
+
+        # meme fond sombre que le menu d'accueil
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setStyleSheet("GrilleWidget { background-color: #202020; }")
 
         # disposition principale : grille a gauche, pave de chiffres a droite
         self.layout_principal = QHBoxLayout()
