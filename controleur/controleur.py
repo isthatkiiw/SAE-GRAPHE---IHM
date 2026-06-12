@@ -125,6 +125,13 @@ class Controleur:
         else:
             self.grille_widget.afficher_selection_pave()
 
+    def double_clic_case(self, ligne, colonne):
+        # double clic sur une case : on la selectionne puis on efface son chiffre
+        if not self.grille.cases:
+            return
+        self.case_selectionnee = self.grille.cases[ligne][colonne]
+        self.effacer_case()
+
     def effacer_case(self):
         case = self.case_selectionnee
         # rien a faire si aucune case n'est selectionnee, si elle est fixe ou deja vide
