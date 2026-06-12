@@ -147,6 +147,13 @@ class FenetrePrincipale(QMainWindow):
         QMessageBox.information(self, "Victoire !",
             f"Bravo ! Vous avez resolu la grille en {self._texte_chrono()}.")
 
+    def afficher_resolution_auto(self):
+        # fenetre affichee quand c'est le solveur qui a resolu la grille a la place du joueur
+        QMessageBox.information(self, "Grille resolue !",
+            "L'ordinateur a resolu la grille en 0.0001 seconde.\n"
+            "Vous, ca fait " + self._texte_chrono() + " que vous etes dessus...\n"
+            "Mais promis, on ne dira rien a personne.")
+
     def ouvrir(self):
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
         if chemin:
