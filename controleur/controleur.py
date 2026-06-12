@@ -63,6 +63,49 @@ class Controleur:
             self.grille_widget.afficher_grille(self.grille)
             self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
 
+    def indice(self):
+        if not self.grille.cases:
+            return
+
+        # memoriser la valeur de chaque case avant de resoudre
+        sauvegarde = []
+        for ligne in self.grille.cases:
+            for case in ligne:
+                sauvegarde.append((case, case.valeur))
+
+        # resoudre la grille pour connaitre les bonnes valeurs
+        if not Solveur().resoudre(self.grille):
+            self.fenetre.statusBar().showMessage("Pas d'indice possible : un des chiffres deja poses est faux.")
+            return
+
+        # choisir la case a reveler : la case selectionnee si elle etait vide, sinon la premiere vide
+        case_indice = None
+        for case, ancienne_valeur in sauvegarde:
+            if ancienne_valeur == 0 and case_indice is None:
+                case_indice = case
+            if ancienne_valeur == 0 and case == self.case_selectionnee:
+                case_indice = case
+
+        if case_indice is None:
+            self.fenetre.statusBar().showMessage("La grille est deja remplie !")
+            return
+
+        # garder la valeur trouvee par le solveur pour cette case
+        valeur_indice = case_indice.valeur
+
+        # remettre les valeurs du joueur partout
+        for case, ancienne_valeur in sauvegarde:
+            case.valeur = ancienne_valeur
+
+        # poser l'indice comme un coup normal, annulable avec Ctrl+Z
+        self.historique.append((case_indice, case_indice.valeur))
+        case_indice.valeur = valeur_indice
+        self.grille_widget.afficher_grille(self.grille)
+        self.fenetre.statusBar().showMessage("Indice : un chiffre a ete place pour vous.")
+        if self.grille.est_resolue():
+            self.fenetre.arreter_chrono()
+            self.fenetre.afficher_victoire()
+
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
             return
