@@ -27,7 +27,6 @@ class GrilleWidget(QWidget):
 
         # disposition principale : grille a gauche, pave de chiffres a droite
         self.layout_principal = QHBoxLayout()
-        self.setLayout(self.layout_principal)
 
         self.layout_grille = QGridLayout()
         self.layout_grille.setSpacing(0)
@@ -52,6 +51,23 @@ class GrilleWidget(QWidget):
         self.layout_principal.addSpacing(40)
         self.layout_principal.addLayout(colonne_pave)
         self.layout_principal.addStretch(1)
+
+        # bouton "Menu" en haut a droite pour revenir au menu
+        bouton_retour = QPushButton("Menu")
+        bouton_retour.setFixedSize(100, 44)
+        bouton_retour.setCursor(Qt.CursorShape.PointingHandCursor)
+        bouton_retour.setStyleSheet("font-size: 16px; font-weight: bold; color: black; background-color: #f5a623; border: 3px solid #fef9e7;")
+        bouton_retour.clicked.connect(self.controleur.fenetre.confirmer_retour_menu)
+
+        barre_haut = QHBoxLayout()
+        barre_haut.addStretch(1)
+        barre_haut.addWidget(bouton_retour)
+
+        # bouton Menu en haut, puis la grille et le pave
+        layout_exterieur = QVBoxLayout()
+        layout_exterieur.addLayout(barre_haut)
+        layout_exterieur.addLayout(self.layout_principal)
+        self.setLayout(layout_exterieur)
 
     def afficher_pave(self, n_max):
         # supprimer les anciens boutons du pave

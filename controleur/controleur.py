@@ -59,6 +59,13 @@ class Controleur:
     def recommencer(self):
         if self.chemin_actuel:
             self.charger_grille(self.chemin_actuel)
+
+    def retour_menu(self):
+        # quitter la partie en cours et revenir au menu d'accueil
+        self.grille = Grille()
+        self.fenetre.arreter_chrono()
+        self.fenetre.desactiver_actions_jeu()
+        self.fenetre.afficher_menu()
             
     def annuler(self):
         if not self.historique:

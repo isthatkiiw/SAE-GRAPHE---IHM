@@ -87,8 +87,14 @@ class FenetrePrincipale(QMainWindow):
         action_resoudre.triggered.connect(self.confirmer_resoudre)
         menu_jeu.addAction(action_resoudre)
 
+        menu_jeu.addSeparator()
+
+        action_retour_menu = QAction("Retour au menu", self)
+        action_retour_menu.triggered.connect(self.confirmer_retour_menu)
+        menu_jeu.addAction(action_retour_menu)
+
         # toutes les actions du menu Jeu necessitent une grille chargee
-        self.actions_jeu.extend([action_annuler, action_verifier, action_recommencer, action_indice, action_resoudre])
+        self.actions_jeu.extend([action_annuler, action_verifier, action_recommencer, action_indice, action_resoudre, action_retour_menu])
 
     def _creer_menu_aide(self):
         barre = self.menuBar()
@@ -182,6 +188,11 @@ class FenetrePrincipale(QMainWindow):
         for action in self.actions_jeu:
             action.setEnabled(True)
 
+    def desactiver_actions_jeu(self):
+        # grise les actions de jeu, appele quand on revient au menu d'accueil
+        for action in self.actions_jeu:
+            action.setEnabled(False)
+
     def _demander_confirmation(self, titre, message):
         # affiche une question Oui/Non et renvoie True si le joueur clique Oui
         reponse = QMessageBox.question(self, titre, message)
@@ -196,6 +207,11 @@ class FenetrePrincipale(QMainWindow):
         if self._demander_confirmation("Resoudre",
                 "Laisser l'ordinateur resoudre la grille ?\nLa partie en cours sera terminee."):
             self.controleur.resoudre()
+
+    def confirmer_retour_menu(self):
+        if self._demander_confirmation("Retour au menu",
+                "Revenir au menu ?\nLa partie en cours sera perdue."):
+            self.controleur.retour_menu()
 
     def _confirmer_abandon(self):
         # renvoie True si aucune partie n'est en cours, ou si le joueur accepte de l'abandonner
