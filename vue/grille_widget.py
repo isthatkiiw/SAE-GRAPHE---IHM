@@ -1,5 +1,16 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout
 
+# Bouton d'une case : comme un bouton normal, mais detecte aussi le double clic
+class BoutonCase(QPushButton):
+
+    def __init__(self, controleur):
+        super().__init__()
+        self.controleur = controleur
+
+    def mouseDoubleClickEvent(self, event):
+        # double clic sur la case : on demande au controleur d'effacer son chiffre
+        self.controleur.double_clic_case(self.ligne, self.colonne)
+
 # Widget qui affiche la grille de jeu sous forme de boutons
 class GrilleWidget(QWidget):
 
@@ -115,7 +126,7 @@ class GrilleWidget(QWidget):
             ligne_boutons = []
             for c in range(grille.nb_colonnes):
                 case = grille.cases[l][c]
-                bouton = QPushButton()
+                bouton = BoutonCase(self.controleur)
                 bouton.setFixedSize(60, 60)
                 bouton.ligne = l
                 bouton.colonne = c
