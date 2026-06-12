@@ -56,7 +56,7 @@ class FenetrePrincipale(QMainWindow):
         menu_jeu.addAction(action_verifier)
 
         action_recommencer = QAction("Recommencer", self)
-        action_recommencer.triggered.connect(self.controleur.recommencer)
+        action_recommencer.triggered.connect(self.confirmer_recommencer)
         menu_jeu.addAction(action_recommencer)
 
         action_indice = QAction("Indice", self)
@@ -65,7 +65,7 @@ class FenetrePrincipale(QMainWindow):
         menu_jeu.addAction(action_indice)
 
         action_resoudre = QAction("Resoudre", self)
-        action_resoudre.triggered.connect(self.controleur.resoudre)
+        action_resoudre.triggered.connect(self.confirmer_resoudre)
         menu_jeu.addAction(action_resoudre)
 
     def _creer_menu_aide(self):
@@ -154,6 +154,21 @@ class FenetrePrincipale(QMainWindow):
             "L'ordinateur a resolu la grille en 0.0001 seconde.\n"
             "Vous, ca fait " + self._texte_chrono() + " que vous etes dessus...\n"
             "Mais promis, on ne dira rien a personne.")
+
+    def _demander_confirmation(self, titre, message):
+        # affiche une question Oui/Non et renvoie True si le joueur clique Oui
+        reponse = QMessageBox.question(self, titre, message)
+        return reponse == QMessageBox.StandardButton.Yes
+
+    def confirmer_recommencer(self):
+        if self._demander_confirmation("Recommencer",
+                "Recommencer la grille ?\nTous vos chiffres seront effaces."):
+            self.controleur.recommencer()
+
+    def confirmer_resoudre(self):
+        if self._demander_confirmation("Resoudre",
+                "Laisser l'ordinateur resoudre la grille ?\nLa partie en cours sera terminee."):
+            self.controleur.resoudre()
 
     def ouvrir(self):
         chemin, _ = QFileDialog.getOpenFileName(self, "Ouvrir une grille", "", "Fichiers JSON (*.json)")
