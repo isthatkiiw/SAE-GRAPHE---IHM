@@ -1,3 +1,4 @@
+import random
 from modele.grille import Grille
 from vue.fenetre import FenetrePrincipale
 from vue.grille_widget import GrilleWidget
@@ -85,17 +86,34 @@ class Controleur:
             self.fenetre.statusBar().showMessage("Pas d'indice possible : un des chiffres deja poses est faux.")
             return
 
-        # choisir la case a reveler : la case selectionnee si elle etait vide, sinon la premiere vide
-        case_indice = None
+        # retrouver les cases qui etaient vides avant la resolution
+        cases_vides = []
         for case, ancienne_valeur in sauvegarde:
-            if ancienne_valeur == 0 and case_indice is None:
-                case_indice = case
-            if ancienne_valeur == 0 and case == self.case_selectionnee:
-                case_indice = case
+            if ancienne_valeur == 0:
+                cases_vides.append(case)
 
-        if case_indice is None:
+        if not cases_vides:
             self.fenetre.statusBar().showMessage("La grille est deja remplie !")
             return
+
+        case_indice = None
+        # si la case selectionnee est vide, on revele celle-ci
+        if self.case_selectionnee in cases_vides:
+            case_indice = self.case_selectionnee
+        # si la case selectionnee est deja remplie, on revele une case vide de son motif
+        elif self.case_selectionnee is not None:
+            for motif in self.grille.motifs:
+                if self.case_selectionnee in motif.cases:
+                    vides_du_motif = []
+                    for case in motif.cases:
+                        if case in cases_vides:
+                            vides_du_motif.append(case)
+                    if vides_du_motif:
+                        case_indice = random.choice(vides_du_motif)
+
+        # sans selection, ou si le motif est deja complet : une case vide au hasard
+        if case_indice is None:
+            case_indice = random.choice(cases_vides)
 
         # garder la valeur trouvee par le solveur pour cette case
         valeur_indice = case_indice.valeur
@@ -125,6 +143,13 @@ class Controleur:
             self._poser_chiffre()
         else:
             self.grille_widget.afficher_grille(self.grille)
+
+    def deselectionner_case(self):
+        if not self.grille.cases:
+            return
+        self.case_selectionnee = None
+        self.case_erreur = None
+        self.grille_widget.afficher_grille(self.grille)
 
     def selectionner_chiffre(self, chiffre):
         self.chiffre_selectionne = chiffre

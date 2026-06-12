@@ -158,6 +158,11 @@ class GrilleWidget(QWidget):
                 ligne_boutons.append(bouton)
             self.boutons.append(ligne_boutons)
 
+    def mousePressEvent(self, event):
+        # clic dans le vide, en dehors des cases et du pave : on deselectionne la case
+        # les clics sur les boutons n'arrivent pas ici, ils sont geres par les boutons
+        self.controleur.deselectionner_case()
+
     def _on_clic(self):
         bouton = self.sender()  # recupere le bouton qui a ete clique
         self.controleur.selectionner_case(bouton.ligne, bouton.colonne)
