@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget, QInputDialog
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget, QInputDialog, QLineEdit
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt, QTimer
 
@@ -250,9 +250,15 @@ class FenetrePrincipale(QMainWindow):
             self.controleur.recommencer()
 
     def confirmer_resoudre(self):
-        if self._demander_confirmation("Resoudre",
-                "Laisser l'ordinateur resoudre la grille ?\nLa partie en cours sera terminee."):
-            self.controleur.resoudre()
+        # un mot de passe est demande pour que le joueur ne triche pas trop facilement
+        mot_de_passe, ok = QInputDialog.getText(self, "Resoudre",
+            "Mot de passe pour resoudre la grille :", QLineEdit.EchoMode.Password)
+        if not ok:
+            return
+        if mot_de_passe != "conoirlebest":
+            QMessageBox.warning(self, "Resoudre", "Mauvais mot de passe !")
+            return
+        self.controleur.resoudre()
 
     def confirmer_retour_menu(self):
         if self._demander_confirmation("Retour au menu",
