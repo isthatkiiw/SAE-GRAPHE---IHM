@@ -208,6 +208,14 @@ class FenetrePrincipale(QMainWindow):
         if self._confirmer_abandon():
             self.controleur.jouer_grille_aleatoire()
 
+    def closeEvent(self, event):
+        # appele automatiquement a la fermeture de la fenetre
+        if self.controleur.grille.cases and not self._demander_confirmation("Quitter",
+                "Quitter le jeu ?\nLa partie en cours sera perdue."):
+            event.ignore()
+        else:
+            event.accept()
+
     def ouvrir(self):
         # demander confirmation si une partie est deja en cours
         if not self._confirmer_abandon():
