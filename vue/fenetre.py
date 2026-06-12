@@ -9,9 +9,14 @@ class FenetrePrincipale(QMainWindow):
         super().__init__()
         self.controleur = controleur
         self.setWindowTitle("Neonaure")
+        # actions de jeu, grisees tant qu'aucune grille n'est chargee
+        self.actions_jeu = []
         self._creer_menu_fichier()
         self._creer_menu_jeu()
         self._creer_menu_aide()
+        for action in self.actions_jeu:
+            action.setEnabled(False)
+            
         self.statusBar().showMessage("Bienvenue dans Neonaure !")
         self.label_chrono = QLabel("00:00")                         # label du chronometre, affiche en permanence a droite de la barre de statut
         self.statusBar().addPermanentWidget(self.label_chrono)
@@ -45,6 +50,7 @@ class FenetrePrincipale(QMainWindow):
         action_sauvegarder.setShortcut("Ctrl+S")
         action_sauvegarder.triggered.connect(self.sauvegarder)
         menu_fichier.addAction(action_sauvegarder)
+        self.actions_jeu.append(action_sauvegarder)
 
         menu_fichier.addSeparator()
 
@@ -80,6 +86,9 @@ class FenetrePrincipale(QMainWindow):
         action_resoudre = QAction("Resoudre", self)
         action_resoudre.triggered.connect(self.confirmer_resoudre)
         menu_jeu.addAction(action_resoudre)
+
+        # toutes les actions du menu Jeu necessitent une grille chargee
+        self.actions_jeu.extend([action_annuler, action_verifier, action_recommencer, action_indice, action_resoudre])
 
     def _creer_menu_aide(self):
         barre = self.menuBar()
@@ -167,6 +176,11 @@ class FenetrePrincipale(QMainWindow):
             "L'ordinateur a resolu la grille en 0.0001 seconde.\n"
             "Vous, ca fait " + self._texte_chrono() + " que vous etes dessus...\n"
             "Mais promis, on ne dira rien a personne.")
+
+    def activer_actions_jeu(self):
+        # rend les actions de jeu cliquables, appele quand une grille est chargee
+        for action in self.actions_jeu:
+            action.setEnabled(True)
 
     def _demander_confirmation(self, titre, message):
         # affiche une question Oui/Non et renvoie True si le joueur clique Oui
