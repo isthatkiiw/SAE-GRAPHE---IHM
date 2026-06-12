@@ -70,16 +70,23 @@ class Controleur:
     def resoudre(self):
         if not self.grille.cases:
             return
-        if Solveur().resoudre(self.grille):
-            self.grille_widget.afficher_grille(self.grille)
-            self.fenetre.arreter_chrono()
-            self.fenetre.statusBar().showMessage("Grille resolue !")
-            self.fenetre.afficher_resolution_auto()
-            # repartir sur une grille vierge une fois la pop up fermee
-            self.recommencer()
-        else:
-            self.grille_widget.afficher_grille(self.grille)
-            self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
+        # si les chiffres du joueur bloquent le solveur on les enleve et on reessaie
+        if not Solveur().resoudre(self.grille):
+            for ligne in self.grille.cases:
+                for case in ligne:
+                    if not case.fixe:
+                        case.valeur = 0
+            # la grille est vraiment insoluble meme sans les chiffre du joueur
+            if not Solveur().resoudre(self.grille):
+                self.grille_widget.afficher_grille(self.grille)
+                self.fenetre.statusBar().showMessage("Cette grille n'a pas de solution.")
+                return
+        self.grille_widget.afficher_grille(self.grille)
+        self.fenetre.arreter_chrono()
+        self.fenetre.statusBar().showMessage("Grille resolue !")
+        self.fenetre.afficher_resolution_auto()
+        # repartir sur une grille vierge une fois la pop up fermee
+        self.recommencer()
 
     def indice(self):
         if not self.grille.cases:
