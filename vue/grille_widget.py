@@ -15,11 +15,27 @@ class GrilleWidget(QWidget):
 
         self.layout_grille = QGridLayout()
         self.layout_grille.setSpacing(0)
-        self.layout_principal.addLayout(self.layout_grille)
 
         self.layout_pave = QVBoxLayout()
         self.layout_pave.setSpacing(5)
-        self.layout_principal.addLayout(self.layout_pave)
+
+        # la grille et le pave restent compacts et centres, meme en plein ecran
+        colonne_grille = QVBoxLayout()
+        colonne_grille.addStretch(1)
+        colonne_grille.addLayout(self.layout_grille)
+        colonne_grille.addStretch(1)
+
+        colonne_pave = QVBoxLayout()
+        colonne_pave.addStretch(1)
+        colonne_pave.addLayout(self.layout_pave)
+        colonne_pave.addStretch(1)
+
+        self.layout_principal.addStretch(1)
+        self.layout_principal.addLayout(colonne_grille)
+        # petit espace fixe entre la grille et le pave
+        self.layout_principal.addSpacing(40)
+        self.layout_principal.addLayout(colonne_pave)
+        self.layout_principal.addStretch(1)
 
     def afficher_pave(self, n_max):
         # supprimer les anciens boutons du pave
