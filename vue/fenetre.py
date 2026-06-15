@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget, QInputDialog, QLineEdit
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QLabel, QStackedWidget, QInputDialog, QLineEdit, QStyle
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt, QTimer
 
@@ -43,14 +43,17 @@ class FenetrePrincipale(QMainWindow):
     def _creer_menu_fichier(self):
         barre = self.menuBar()
         menu_fichier = barre.addMenu("Fichier")
+        style = self.style()
 
         action_ouvrir = QAction("Ouvrir", self)
         action_ouvrir.setShortcut("Ctrl+O")
+        action_ouvrir.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_DialogOpenButton))
         action_ouvrir.triggered.connect(self.ouvrir)
         menu_fichier.addAction(action_ouvrir)
 
         action_sauvegarder = QAction("Sauvegarder", self)
         action_sauvegarder.setShortcut("Ctrl+S")
+        action_sauvegarder.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton))
         action_sauvegarder.triggered.connect(self.sauvegarder)
         menu_fichier.addAction(action_sauvegarder)
         self.actions_jeu.append(action_sauvegarder)
@@ -59,40 +62,48 @@ class FenetrePrincipale(QMainWindow):
 
         action_quitter = QAction("Quitter", self)
         action_quitter.setShortcut("Ctrl+Q")
+        action_quitter.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_DialogCloseButton))
         action_quitter.triggered.connect(self.close)
         menu_fichier.addAction(action_quitter)
     
     def _creer_menu_jeu(self):
         barre = self.menuBar()
         menu_jeu = barre.addMenu("Jeu")
+        style = self.style()
 
         action_annuler = QAction("Annuler", self)
         action_annuler.setShortcut("Ctrl+Z")
+        action_annuler.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_ArrowBack))
         action_annuler.triggered.connect(self.controleur.annuler)
         menu_jeu.addAction(action_annuler)
 
         menu_jeu.addSeparator()
 
         action_verifier = QAction("Verifier", self)
+        action_verifier.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton))
         action_verifier.triggered.connect(self.controleur.verifier)
         menu_jeu.addAction(action_verifier)
 
         action_recommencer = QAction("Recommencer", self)
+        action_recommencer.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_BrowserReload))
         action_recommencer.triggered.connect(self.confirmer_recommencer)
         menu_jeu.addAction(action_recommencer)
 
         action_indice = QAction("Indice", self)
         action_indice.setShortcut("Ctrl+I")
+        action_indice.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_MessageBoxQuestion))
         action_indice.triggered.connect(self.controleur.indice)
         menu_jeu.addAction(action_indice)
 
         action_resoudre = QAction("Resoudre", self)
+        action_resoudre.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_ComputerIcon))
         action_resoudre.triggered.connect(self.confirmer_resoudre)
         menu_jeu.addAction(action_resoudre)
 
         menu_jeu.addSeparator()
 
         action_retour_menu = QAction("Retour au menu", self)
+        action_retour_menu.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_DirHomeIcon))
         action_retour_menu.triggered.connect(self.confirmer_retour_menu)
         menu_jeu.addAction(action_retour_menu)
 
@@ -102,16 +113,20 @@ class FenetrePrincipale(QMainWindow):
     def _creer_menu_aide(self):
         barre = self.menuBar()
         menu_aide = barre.addMenu("Aide")
+        style = self.style()
 
         action_regles = QAction("Regles", self)
+        action_regles.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_MessageBoxInformation))
         action_regles.triggered.connect(self.afficher_regles)
         menu_aide.addAction(action_regles)
 
         action_raccourcis = QAction("Raccourcis", self)
+        action_raccourcis.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_FileDialogDetailedView))
         action_raccourcis.triggered.connect(self.afficher_raccourcis)
         menu_aide.addAction(action_raccourcis)
 
         action_credits = QAction("Credits", self)
+        action_credits.setIcon(style.standardIcon(QStyle.StandardPixmap.SP_FileDialogInfoView))
         action_credits.triggered.connect(self.afficher_credits)
         menu_aide.addAction(action_credits)
 
