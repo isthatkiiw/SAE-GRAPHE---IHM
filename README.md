@@ -12,11 +12,25 @@ La grille est découpée en motifs (les zones entourées de traits gras). Il fau
 - un motif de N cases doit contenir tous les chiffres de 1 jusqu'a N
 
 
+## Lancement du jeu
+
+Il suffit de démarrer d'executer une des deux commandes si dessous dans le repertoire du jeu en fonction de l'OS utilisé:
+
+- pour Windows:
+```
+py main.py
+```
+
+- pour Linux:
+```
+python3 main.py
+```
+
 ## Comment jouer
 
 Au démarrage on arrive sur le menu d'accueil. Le bouton JOUER lance une grille au hasard et demande d'abord la difficulté. On peut aussi charger une grille avec le bouton "Charger une grille", ce qui lancera le mode sans difficulté (infinité d'indices et de temps).
 
-Pour remplir une case : on clique dessus pour la sélectionner (elle devient orange) puis on choisit un chiffre, soit en cliquant sur le pavé de droite, soit en tapant ²&directement au clavier. Si le coup ne respecte pas les regles, la case devient rouge.
+Pour remplir une case : on clique dessus pour la sélectionner (elle devient orange) puis on choisit un chiffre, soit en cliquant sur le pavé de droite, soit en tapant directement au clavier. Si le coup ne respecte pas les regles, la case devient rouge.
 
 ### Les raccourcis
 
