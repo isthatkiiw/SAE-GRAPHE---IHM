@@ -133,8 +133,8 @@ class Controleur:
         self.fenetre.arreter_chrono()
         self.fenetre.statusBar().showMessage("Grille resolue !")
         self.fenetre.afficher_resolution_auto()
-        # repartir sur une grille vierge une fois la pop up fermee
-        self.recommencer()
+        # revenir au menu d'accueil une fois la pop up fermee
+        self.retour_menu()
 
     def indice(self):
         if not self.grille.cases:
@@ -204,8 +204,8 @@ class Controleur:
         if self.grille.est_resolue():
             self.fenetre.arreter_chrono()
             self.fenetre.afficher_victoire()
-            # repartir sur une grille vierge une fois la pop up fermee
-            self.recommencer()
+            # revenir au menu d'accueil une fois la pop up fermee
+            self.retour_menu()
 
     def selectionner_case(self, ligne, colonne):
         if not self.grille.cases:
@@ -278,5 +278,5 @@ class Controleur:
             self.fenetre.arreter_chrono()
             self.fenetre.statusBar().showMessage("La grille est resolue ! Vous etes un expert du Neonaure !!")
             self.fenetre.afficher_victoire()
-            # repartir sur une grille vierge une fois la pop up fermee
-            self.recommencer()
+            # revenir au menu d'accueil une fois la pop up fermee
+            self.retour_menu()
